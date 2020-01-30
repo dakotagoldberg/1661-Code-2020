@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PWMTalonFX;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -23,6 +26,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  WPI_TalonFX oneMotor = new  WPI_TalonFX(10);
 
   /**
    * This function is run when the robot is first started up and should be
@@ -32,9 +36,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+
+
+    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    // m_chooser.addOption("My Auto", kCustomAuto);
+    // SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**
@@ -62,9 +68,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    // m_autoSelected = m_chooser.getSelected();
+    // // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    // System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /**
@@ -72,15 +78,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    // switch (m_autoSelected) {
+    //   case kCustomAuto:
+    //     // Put custom auto code here
+    //     break;
+    //   case kDefaultAuto:
+    //   default:
+    //     // Put default auto code here
+    //     break;
+    // }
   }
 
   /**
@@ -88,16 +94,37 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
   }
 
   /**
    * This function is called periodically during test mode.
    */
+
+  @Override
+  public void testInit() {
+    System.out.print("crystal clear cutlery");
+    // oneMotor.setSelectedSensorPosition(0);
+    // ControlMode position = 
+    // oneMotor.set(ControlMode.Position, 2000);
+
+    // oneMotor.config_kP(3, 0.45, 0);
+    // oneMotor.config_kI(3, 0.0, 0);
+    // oneMotor.config_kD(3, 4, 0);
+
+    // oneMotor.set(ControlMode.Position, 5000);
+  }
+
+   
   @Override
   public void testPeriodic() {
-    System.out.print("bruh");
-    PWMTalonFX oneMotor = new PWMTalonFX(9);
+    System.out.println("bruh");
 
-    oneMotor.setSpeed(0.1);
+    // oneMotor.set(0.1);
+    // oneMotor.config_kP(0, 4.0, 10);
+    // oneMotor.set(ControlMode.MotionMagic, 2000);
+    // System.out.println(oneMotor.getSelectedSensorPosition());
+
+    // oneMotor.set(0.1);
     }
 }
