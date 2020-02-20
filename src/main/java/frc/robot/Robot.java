@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PWMTalonFX;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.drive.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -29,7 +31,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  // private TalonSRX testTalon = new TalonSRX(4);
+  private TalonSRX testTalon = new TalonSRX(2);
 
   
 
@@ -42,6 +44,8 @@ public class Robot extends TimedRobot {
   WPI_TalonFX anotherMotor = new  WPI_TalonFX(11);
   int right_bumper = 5;
 
+  WPI_TalonFX okayFalcon = new  WPI_TalonFX(11);
+
   // Counterclockwise, Master
   TalonSRX intakeRight = new TalonSRX(2);
   
@@ -51,6 +55,31 @@ public class Robot extends TimedRobot {
 
   // Up-Down Pneumatics
   DoubleSolenoid intakeRaise = new DoubleSolenoid(0, 1);
+
+
+  // // Drive
+  // Compressor compressor = new Compressor(0);
+
+  // int front_left_drive = 0;
+  // int front_right_drive = 0;
+  // int back_left_drive = 0;
+  // int back_right_drive = 0; 
+    
+  // WPI_TalonFX fLeft = new WPI_TalonFX(front_left_drive);
+  // WPI_TalonFX fRight = new WPI_TalonFX(front_right_drive);
+  // WPI_TalonFX bLeft = new WPI_TalonFX(back_left_drive);
+  // WPI_TalonFX bRight = new WPI_TalonFX(back_right_drive);
+
+  // SpeedControllerGroup left = new SpeedControllerGroup(fLeft, bLeft);
+  // SpeedControllerGroup right = new SpeedControllerGroup(fRight, bRight);
+
+  // DifferentialDrive tank = new DifferentialDrive(left, right);
+
+  // Drive drive = new Drive();
+
+    
+
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -138,10 +167,10 @@ public class Robot extends TimedRobot {
 
     // oneMotor.set(ControlMode.Position, 5000);
 
-    intakeRight.configFactoryDefault();
-    intakeLeft.configFactoryDefault();
+    // intakeRight.configFactoryDefault();
+    // intakeLeft.configFactoryDefault();
 
-    intakeLeft.set(ControlMode.Follower, intakeRight.getDeviceID());
+    // intakeLeft.set(ControlMode.Follower, intakeRight.getDeviceID());
 
   }
 
@@ -150,7 +179,7 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     System.out.println("bruh");
 
-    // testTalon.set(ControlMode.PercentOutput, 0.4);
+    testTalon.set(ControlMode.PercentOutput, 0.75);
     // oneMotor.set(0.1);
     // System.out.println("oneMotor: " + oneMotor.getSelectedSensorPosition());
     // anotherMotor.set(0.1);
@@ -159,9 +188,9 @@ public class Robot extends TimedRobot {
     // Testing the turret
     // double leftTrigger = driveBox.getRawAxis(2);
     // Testing the Intake
-    double x = driveBox.getRawAxis(3);
+    // double x = driveBox.getRawAxis(3);
 
-    boolean intakeIsRaised = false;
+    // boolean intakeIsRaised = false;
     // System.out.println(driveBox.getRawButton(right_bumper));
 
     // Just for the left trigger
@@ -171,15 +200,15 @@ public class Robot extends TimedRobot {
     // }
     
 
-    if (x > .1) {
-      // intakeRight.set(ControlMode.PercentOutput, x);
-      intakeLeft.set(ControlMode.PercentOutput, x);
+    // if (x > .1) {
+    //   // intakeRight.set(ControlMode.PercentOutput, x);
+    //   intakeLeft.set(ControlMode.PercentOutput, x);
 
-    }
-    else {
-      // intakeRight.set(ControlMode.PercentOutput, 0);
-      intakeLeft.set(ControlMode.PercentOutput, x);
-    }
+    // }
+    // else {
+    //   // intakeRight.set(ControlMode.PercentOutput, 0);
+    //   intakeLeft.set(ControlMode.PercentOutput, x);
+    // }
     
 
     // if (driveBox.getAButton()) {
@@ -189,15 +218,15 @@ public class Robot extends TimedRobot {
 
     // Raise/Lower Intake
     
-    if (driveBox.getAButton()) {
-      intakeRaise.set(DoubleSolenoid.Value.kForward);
-      status = "Intake: Up";
-    }
-    else if (driveBox.getBButton()) {
-      intakeRaise.set(DoubleSolenoid.Value.kReverse);
-      status = "Intake: Down";
-    }
-    System.out.println(status);
+    // if (driveBox.getAButton()) {
+    //   intakeRaise.set(DoubleSolenoid.Value.kForward);
+    //   status = "Intake: Up";
+    // }
+    // else if (driveBox.getBButton()) {
+    //   intakeRaise.set(DoubleSolenoid.Value.kReverse);
+    //   status = "Intake: Down";
+    // }
+    // System.out.println(status);
 
     // intakeRaise.set(DoubleSolenoid.Value.kReverse);
 
@@ -206,9 +235,15 @@ public class Robot extends TimedRobot {
 
 
 
+    // Drive
+
+    // drive.executeTank(); //Uses both sticks on driveBox        
+
+
 
 
 
   
   }
 }
+
