@@ -179,7 +179,7 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     System.out.println("bruh");
 
-    testTalon.set(ControlMode.PercentOutput, 0.75);
+    testTalon.set(ControlMode.PercentOutput, 0.3);
     // oneMotor.set(0.1);
     // System.out.println("oneMotor: " + oneMotor.getSelectedSensorPosition());
     // anotherMotor.set(0.1);
