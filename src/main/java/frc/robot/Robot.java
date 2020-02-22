@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+// import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PWMTalonFX;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.*;
@@ -40,8 +40,8 @@ public class Robot extends TimedRobot {
 
 
   String status = "Intake: Down";
-  WPI_TalonFX oneMotor = new  WPI_TalonFX(10);
-  WPI_TalonFX anotherMotor = new  WPI_TalonFX(11);
+  WPI_TalonFX oneMotor = new  WPI_TalonFX(2);
+  WPI_TalonFX anotherMotor = new  WPI_TalonFX(3);
   int right_bumper = 5;
 
   WPI_TalonFX okayFalcon = new  WPI_TalonFX(11);
@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
   TalonSRX intakeLeft = new TalonSRX(4);
 
   // Up-Down Pneumatics
-  DoubleSolenoid intakeRaise = new DoubleSolenoid(0, 1);
+  // DoubleSolenoid intakeRaise = new DoubleSolenoid(0, 1);
 
 
   // // Drive
@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
 
   // DifferentialDrive tank = new DifferentialDrive(left, right);
 
-  // Drive drive = new Drive();
+   Drive drive = new Drive();
 
     
 
@@ -179,10 +179,10 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     System.out.println("bruh");
 
-    testTalon.set(ControlMode.PercentOutput, 0.3);
-    // oneMotor.set(0.1);
+    //testTalon.set(ControlMode.PercentOutput, 0.3);
+    oneMotor.set(0.1);
     // System.out.println("oneMotor: " + oneMotor.getSelectedSensorPosition());
-    // anotherMotor.set(0.1);
+     anotherMotor.set(0.1);
     // System.out.println("anotherMotor: " + anotherMotor.getSelectedSensorPosition());
 
     // Testing the turret

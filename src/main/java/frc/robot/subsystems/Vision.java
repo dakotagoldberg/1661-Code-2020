@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import frc.robot.constants.Robot_Framework;
+import frc.robot.Robot_Framework;
 
 public class Vision implements Robot_Framework {
 

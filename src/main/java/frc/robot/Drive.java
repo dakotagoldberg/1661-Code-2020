@@ -1,54 +1,57 @@
-// package frc.robot;
+package frc.robot;
 
-// import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
-// // import frc.robot.*;
 
-// import frc.robot.Robot;
+// import frc.robot.*;
 
-// public class Drive extends Robot implements Constants{
-//     double x, y, throttle, turn, speedL, speedR, t_left, t_right;
+import frc.robot.Robot;
 
-//     public Drive() { 
-//         fLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
+public class Drive implements Robot_Framework{
+    
 
-//         fRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
+    double x, y, throttle, turn, speedL, speedR, t_left, t_right;
 
-//         fLeft.configOpenloopRamp(open_ramp);
+    public Drive() { 
+        fLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
 
-//         fRight.configOpenloopRamp(open_ramp);
+        fRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
 
-//         compressor.setClosedLoopControl(true);
-//     }
+        fLeft.configOpenloopRamp(open_ramp);
 
-//     public void executeTank() {
-//         y = -driveBox.getRawAxis(left_y_axis);
-//         x = driveBox.getRawAxis(right_x_axis);
+        fRight.configOpenloopRamp(open_ramp);
 
-//         if (Math.abs(y) > 0.1)
-//             throttle = y;
-//         else
-//             throttle = 0.0;
+        compressor.setClosedLoopControl(true);
+    }
 
-//         if (Math.abs(x) > 0.2)
-//             turn = x;
-//         else
-//             turn = 0.0;
+    public void executeTank() {
+        y = -driveBox.getRawAxis(left_y_axis);
+        x = driveBox.getRawAxis(right_x_axis);
 
-//         t_left = throttle + turn;
-//         t_right = throttle - turn;
+        if (Math.abs(y) > 0.1)
+            throttle = y;
+        else
+            throttle = 0.0;
 
-//         speedL = t_left + skim(t_right);
-//         speedR = t_right + skim(t_left);
+        if (Math.abs(x) > 0.2)
+            turn = x;
+        else
+            turn = 0.0;
 
-//         tank.tankDrive(speedL, speedR);
-//     }
+        t_left = throttle + turn;
+        t_right = throttle - turn;
 
-//     private double skim(double v) {
-//         if (v > 1.0)
-//             return -((v - 1.0) * gain_skim);        
-//         else if (v < -1.0)
-//             return -((v + 1.0) * gain_skim);
-//         return 0;
-//     }
-// }
+        speedL = t_left + skim(t_right);
+        speedR = t_right + skim(t_left);
+
+        tank.tankDrive(speedL, speedR);
+    }
+
+    private double skim(double v) {
+        if (v > 1.0)
+            return -((v - 1.0) * gain_skim);        
+        else if (v < -1.0)
+            return -((v + 1.0) * gain_skim);
+        return 0;
+    }
+}
