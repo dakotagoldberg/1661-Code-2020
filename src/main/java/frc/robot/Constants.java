@@ -2,9 +2,10 @@ package frc.robot;
 
 public interface Constants {
 
-    // ID -- 
+    // ID -- All ID constants need to be changed (imaginary vaules in now)
 
-    final static int right_intake = 12;
+    final static int right_intake = 11;
+    final static int left_intake = 12;
 
     // Drive
 

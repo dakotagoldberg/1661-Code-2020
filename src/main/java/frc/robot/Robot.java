@@ -38,10 +38,13 @@ public class Robot extends TimedRobot {
   XboxController driveBox = new XboxController(1);
   // final static int right_trigger = 4;
 
+  boolean shooting = false;
 
   String status = "Intake: Down";
+  
   WPI_TalonFX oneMotor = new  WPI_TalonFX(2);
   WPI_TalonFX anotherMotor = new  WPI_TalonFX(3);
+
   int right_bumper = 5;
 
   WPI_TalonFX okayFalcon = new  WPI_TalonFX(11);
@@ -170,6 +173,9 @@ public class Robot extends TimedRobot {
     // intakeRight.configFactoryDefault();
     // intakeLeft.configFactoryDefault();
 
+    oneMotor.configFactoryDefault();
+    anotherMotor.configFactoryDefault();
+
     // intakeLeft.set(ControlMode.Follower, intakeRight.getDeviceID());
 
   }
@@ -180,15 +186,15 @@ public class Robot extends TimedRobot {
     System.out.println("bruh");
 
     //testTalon.set(ControlMode.PercentOutput, 0.3);
-    oneMotor.set(0.1);
+    // oneMotor.set(0.1);
     // System.out.println("oneMotor: " + oneMotor.getSelectedSensorPosition());
-     anotherMotor.set(0.1);
+    //  anotherMotor.set(0.1);
     // System.out.println("anotherMotor: " + anotherMotor.getSelectedSensorPosition());
 
     // Testing the turret
     // double leftTrigger = driveBox.getRawAxis(2);
     // Testing the Intake
-    // double x = driveBox.getRawAxis(3);
+    double x = driveBox.getRawAxis(3);
 
     // boolean intakeIsRaised = false;
     // System.out.println(driveBox.getRawButton(right_bumper));
@@ -198,16 +204,34 @@ public class Robot extends TimedRobot {
     //   testTalon.set(ControlMode.PercentOutput, leftTrigger/2);
     //   System.out.println(leftTrigger);
     // }
+
+
+
+    // SHOOTING
+
     
+      if (x > .2) {
+        oneMotor.set(-0.15);
+        anotherMotor.set(0.15);
+        System.out.println("Shooting");
+      }
+      else {
+        oneMotor.set(0.0);
+        anotherMotor.set(0.0);
+        System.out.println("Not shooting");
+      }
+
+
+
+
 
     // if (x > .1) {
     //   // intakeRight.set(ControlMode.PercentOutput, x);
-    //   intakeLeft.set(ControlMode.PercentOutput, x);
-
+    //   // intakeLeft.set(ControlMode.PercentOutput, x);
     // }
     // else {
     //   // intakeRight.set(ControlMode.PercentOutput, 0);
-    //   intakeLeft.set(ControlMode.PercentOutput, x);
+    //   // intakeLeft.set(ControlMode.PercentOutput, x);
     // }
     
 
