@@ -2,6 +2,10 @@ package frc.robot;
 
 public interface Constants {
 
+    // ID -- 
+
+    final static int right_intake = 12;
+
     // Drive
 
     final static double gain_skim = 0.9;

@@ -26,4 +26,11 @@ public interface Robot_Framework extends Constants {
     DifferentialDrive tank = new DifferentialDrive(left, right);
     XboxController driveBox = new XboxController(1);
 
+    // Intake
+    TalonSRX intakeLeft = new TalonSRX(4);
+    TalonSRX intakeLeft = new TalonSRX(4);
+
+    // Intake Up-Down Pneumatics
+    DoubleSolenoid intakeRaise = new DoubleSolenoid(0, 1);
+
 }

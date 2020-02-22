@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
   TalonSRX intakeLeft = new TalonSRX(4);
 
   // Up-Down Pneumatics
-  // DoubleSolenoid intakeRaise = new DoubleSolenoid(0, 1);
+  DoubleSolenoid intakeRaise = new DoubleSolenoid(0, 1);
 
 
   // // Drive
