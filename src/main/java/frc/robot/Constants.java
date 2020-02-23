@@ -9,10 +9,10 @@ public interface Constants {
     
     final static int turret_motor = 0;
 
+    final static int front_right_drive = 5;
     final static int front_left_drive = 6;
-    final static int front_right_drive = 0;
+    final static int back_right_drive = 7; 
     final static int back_left_drive = 8;
-    final static int back_right_drive = 0; 
 
     final static int right_intake = 11; // Double check this value
     final static int left_intake = 12; // Double check this value

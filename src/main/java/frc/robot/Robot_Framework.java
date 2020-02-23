@@ -38,6 +38,8 @@ public interface Robot_Framework extends Constants {
     DoubleSolenoid intakePosition = new DoubleSolenoid(0, 1);
 
     // Shooter
+    WPI_TalonFX ShooterR = new  WPI_TalonFX(shooter_R);
+    WPI_TalonFX ShooterL = new  WPI_TalonFX(shooter_L);
 
     // Vertical Agitator
     WPI_TalonFX verticalAgitator = new WPI_TalonFX(vertical_agitator);

@@ -4,8 +4,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import frc.robot.Robot_Framework;
 
 public class Shooter implements Robot_Framework {
-    WPI_TalonFX ShooterR = new  WPI_TalonFX(shooter_R);
-    WPI_TalonFX ShooterL = new  WPI_TalonFX(shooter_L);
     
     public Shooter() {
 
