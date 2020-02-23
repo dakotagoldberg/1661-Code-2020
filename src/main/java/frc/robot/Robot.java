@@ -121,17 +121,34 @@ public class Robot extends TimedRobot implements Robot_Framework {
 
     drive.executeTank();
 
-    // Raising/Lowering Intake
-    if (driveBox.getRawButtonPressed(right_bumper)) {
+    // Shifting Gears --> BUMPERS
+    if (driveBox.getRawButton(left_bumper)) {
+      gearSole.set(DoubleSolenoid.Value.kReverse);
+      System.out.println("Gear mode reverse");
+    } 
+    else if (driveBox.getRawButton(right_bumper)) {
+      gearSole.set(DoubleSolenoid.Value.kForward);
+      System.out.println("Gear mode forward");
+    } 
+    else {
+      gearSole.set(DoubleSolenoid.Value.kOff);
+      System.out.println("Gear mode off");
+    }
+
+
+    // Raising/Lowering Intake --> A BUTTON
+    if (driveBox.getRawButtonPressed(a_button)) {
       intakeLowered = !intakeLowered;
     }
 
     if (intakeLowered) {
       intakePosition.set(DoubleSolenoid.Value.kForward);
+      // intakePosition.set(DoubleSolenoid.Value.kOff);
       System.out.println("Intake is down.");
     } 
     else if (!intakeLowered) {
       intakePosition.set(DoubleSolenoid.Value.kReverse);
+      // intakePosition.set(DoubleSolenoid.Value.kOff);
       System.out.println("Intake is up.");
     } 
     else {
@@ -143,14 +160,18 @@ public class Robot extends TimedRobot implements Robot_Framework {
     // Spinning Intake
     if (intakeLowered) {
       rightIntake.set(ControlMode.PercentOutput, .1);
-      rightIntake.set(ControlMode.PercentOutput, .1);
+      leftIntake.set(ControlMode.PercentOutput, .1);
+      horizontalAgitator.set(ControlMode.PercentOutput, .1);
       System.out.println("Intake spinning.");
     }
     else {
       rightIntake.set(ControlMode.PercentOutput, 0);
-      rightIntake.set(ControlMode.PercentOutput, 0);
+      leftIntake.set(ControlMode.PercentOutput, 0);
+      horizontalAgitator.set(ControlMode.PercentOutput, .1);
       System.out.println("Intake not spinning.");
     }
+
+    // Shooting
     
   }
 

@@ -14,7 +14,6 @@ public class Drive implements Robot_Framework{
     double x, y, throttle, turn, speedL, speedR, t_left, t_right;
 
     public Drive() { 
-        System.out.println(test);
 
         fLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
 
@@ -50,10 +49,6 @@ public class Drive implements Robot_Framework{
 
         tank.tankDrive(speedL, speedR);
 
-        System.out.println("x: " + x);
-        System.out.println("y: " + y);
-        System.out.println("speedR: " + speedR);
-        System.out.println("speedL: " + speedL);
 
     }
 

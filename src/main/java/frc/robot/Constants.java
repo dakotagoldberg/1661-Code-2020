@@ -14,8 +14,11 @@ public interface Constants {
     final static int back_left_drive = 8;
     final static int back_right_drive = 0; 
 
-    final static int right_intake = 11;
-    final static int left_intake = 12;
+    final static int right_intake = 11; // Double check this value
+    final static int left_intake = 12; // Double check this value
+
+    final static int horizontal_agitator = 0;
+    final static int vertical_agitator = 0;
 
     // Drive
 
