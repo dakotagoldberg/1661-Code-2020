@@ -4,6 +4,11 @@ public interface Constants {
 
     // ID -- Most ID constants need to be changed (imaginary vaules in now)
     
+    final static int shooter_L = 0;
+    final static int shooter_R = 0;
+    
+    final static int turret = 0;
+
     final static int front_left_drive = 6;
     final static int front_right_drive = 0;
     final static int back_left_drive = 8;
