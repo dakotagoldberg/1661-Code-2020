@@ -156,18 +156,20 @@ public class Robot extends TimedRobot implements Robot_Framework {
       System.out.println("Intake is off?");
     }
 
+    double intakeTestingSpeed = .3;
+    double haTestingSpeed = .15;
 
     // Spinning Intake
     if (intakeLowered) {
-      rightIntake.set(ControlMode.PercentOutput, .1);
-      leftIntake.set(ControlMode.PercentOutput, .1);
-      horizontalAgitator.set(ControlMode.PercentOutput, .1);
+      rightIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
+      leftIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
+      horizontalAgitator.set(ControlMode.PercentOutput, haTestingSpeed);
       System.out.println("Intake spinning.");
     }
     else {
       rightIntake.set(ControlMode.PercentOutput, 0);
       leftIntake.set(ControlMode.PercentOutput, 0);
-      horizontalAgitator.set(ControlMode.PercentOutput, .1);
+      horizontalAgitator.set(ControlMode.PercentOutput, 0);
       System.out.println("Intake not spinning.");
     }
 
