@@ -7,8 +7,11 @@
 
 package frc.robot;
 
+import frc.robot.Robot_Framework;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -19,6 +22,7 @@ import edu.wpi.first.wpilibj.drive.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Timer;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -26,62 +30,16 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot implements Robot_Framework {
+  
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private TalonSRX testTalon = new TalonSRX(2);
-
   
-
-  XboxController driveBox = new XboxController(1);
-  // final static int right_trigger = 4;
-
-  boolean shooting = false;
-
-  String status = "Intake: Down";
   
+  boolean intakeLowered = false;
   WPI_TalonFX oneMotor = new  WPI_TalonFX(2);
-  WPI_TalonFX anotherMotor = new  WPI_TalonFX(3);
-
-  int right_bumper = 5;
-
-  WPI_TalonFX okayFalcon = new  WPI_TalonFX(11);
-
-  // Counterclockwise, Master
-  TalonSRX intakeRight = new TalonSRX(2);
-  
-
-  // Counterclockwise, Slave
-  TalonSRX intakeLeft = new TalonSRX(4);
-
-  // Up-Down Pneumatics
-  DoubleSolenoid intakeRaise = new DoubleSolenoid(0, 1);
-
-
-  // // Drive
-  // Compressor compressor = new Compressor(0);
-
-  // int front_left_drive = 0;
-  // int front_right_drive = 0;
-  // int back_left_drive = 0;
-  // int back_right_drive = 0; 
-    
-  // WPI_TalonFX fLeft = new WPI_TalonFX(front_left_drive);
-  // WPI_TalonFX fRight = new WPI_TalonFX(front_right_drive);
-  // WPI_TalonFX bLeft = new WPI_TalonFX(back_left_drive);
-  // WPI_TalonFX bRight = new WPI_TalonFX(back_right_drive);
-
-  // SpeedControllerGroup left = new SpeedControllerGroup(fLeft, bLeft);
-  // SpeedControllerGroup right = new SpeedControllerGroup(fRight, bRight);
-
-  // DifferentialDrive tank = new DifferentialDrive(left, right);
-
-   Drive drive = new Drive();
-
-    
-
 
 
   /**
@@ -91,7 +49,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-
 
 
     // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -148,9 +105,53 @@ public class Robot extends TimedRobot {
   /**
    * This function is called periodically during operator control.
    */
+
+  @Override
+  public void teleopInit() {
+
+    leftIntake.configContinuousCurrentLimit(intake_continuous_current);
+    rightIntake.configContinuousCurrentLimit(intake_continuous_current);
+    leftIntake.configPeakCurrentLimit(intake_peak_current);
+    rightIntake.configPeakCurrentLimit(intake_peak_current);
+
+  }
+
   @Override
   public void teleopPeriodic() {
 
+    drive.executeTank();
+
+    // Raising/Lowering Intake
+    if (driveBox.getRawButtonPressed(right_bumper)) {
+      intakeLowered = !intakeLowered;
+    }
+
+    if (intakeLowered) {
+      intakePosition.set(DoubleSolenoid.Value.kForward);
+      System.out.println("Intake is down.");
+    } 
+    else if (!intakeLowered) {
+      intakePosition.set(DoubleSolenoid.Value.kReverse);
+      System.out.println("Intake is up.");
+    } 
+    else {
+      intakePosition.set(DoubleSolenoid.Value.kOff);
+      System.out.println("Intake is off?");
+    }
+
+
+    // Spinning Intake
+    if (intakeLowered) {
+      rightIntake.set(ControlMode.PercentOutput, .1);
+      rightIntake.set(ControlMode.PercentOutput, .1);
+      System.out.println("Intake spinning.");
+    }
+    else {
+      rightIntake.set(ControlMode.PercentOutput, 0);
+      rightIntake.set(ControlMode.PercentOutput, 0);
+      System.out.println("Intake not spinning.");
+    }
+    
   }
 
   /**
@@ -159,112 +160,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    System.out.print("crystal clear cutlery");
-    // oneMotor.setSelectedSensorPosition(0);
-    // ControlMode position = 
-    //  oneMotor.set(ControlMode.Position, 50000);
-
-    // oneMotor.config_kP(3, 0.45, 0);
-    // oneMotor.config_kI(3, 0.0, 0);
-    // oneMotor.config_kD(3, 4, 0);
-
-    // oneMotor.set(ControlMode.Position, 5000);
-
-    // intakeRight.configFactoryDefault();
-    // intakeLeft.configFactoryDefault();
-
-    oneMotor.configFactoryDefault();
-    anotherMotor.configFactoryDefault();
-
-    // intakeLeft.set(ControlMode.Follower, intakeRight.getDeviceID());
+    
 
   }
 
    
   @Override
   public void testPeriodic() {
-    System.out.println("bruh");
-
-    //testTalon.set(ControlMode.PercentOutput, 0.3);
-    // oneMotor.set(0.1);
-    // System.out.println("oneMotor: " + oneMotor.getSelectedSensorPosition());
-    //  anotherMotor.set(0.1);
-    // System.out.println("anotherMotor: " + anotherMotor.getSelectedSensorPosition());
-
-    // Testing the turret
-    // double leftTrigger = driveBox.getRawAxis(2);
-    // Testing the Intake
-    double x = driveBox.getRawAxis(3);
-
-    // boolean intakeIsRaised = false;
-    // System.out.println(driveBox.getRawButton(right_bumper));
-
-    // Just for the left trigger
-    // if(leftTrigger > .1) {
-    //   testTalon.set(ControlMode.PercentOutput, leftTrigger/2);
-    //   System.out.println(leftTrigger);
-    // }
-
-
-
-    // SHOOTING
-
     
-      if (x > .2) {
-        oneMotor.set(-0.15);
-        anotherMotor.set(0.15);
-        System.out.println("Shooting");
-      }
-      else {
-        oneMotor.set(0.0);
-        anotherMotor.set(0.0);
-        System.out.println("Not shooting");
-      }
-
-
-
-
-
-    // if (x > .1) {
-    //   // intakeRight.set(ControlMode.PercentOutput, x);
-    //   // intakeLeft.set(ControlMode.PercentOutput, x);
-    // }
-    // else {
-    //   // intakeRight.set(ControlMode.PercentOutput, 0);
-    //   // intakeLeft.set(ControlMode.PercentOutput, x);
-    // }
-    
-
-    // if (driveBox.getAButton()) {
-    //   intakeIsRaised = !intakeIsRaised;
-    //   System.out.println("BUTTON WORKS");
-    // }
-
-    // Raise/Lower Intake
-    
-    // if (driveBox.getAButton()) {
-    //   intakeRaise.set(DoubleSolenoid.Value.kForward);
-    //   status = "Intake: Up";
-    // }
-    // else if (driveBox.getBButton()) {
-    //   intakeRaise.set(DoubleSolenoid.Value.kReverse);
-    //   status = "Intake: Down";
-    // }
-    // System.out.println(status);
-
-    // intakeRaise.set(DoubleSolenoid.Value.kReverse);
-
-    // Write code for up/down w/ pneumatics (one)
-
-
-
-
-    // Drive
-
-    // drive.executeTank(); //Uses both sticks on driveBox        
-
-
-
+  
+    // oneMotor.set(.1);
 
 
   

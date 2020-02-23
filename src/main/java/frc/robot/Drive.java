@@ -1,26 +1,22 @@
 package frc.robot;
 
+import frc.robot.Robot_Framework;
+
+
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.Compressor;
 
-import frc.robot.*;
-
-import frc.robot.Robot_Framework;
-import frc.robot.Robot_Framework.*;
-
 public class Drive implements Robot_Framework{
 
-    /* Quick description of the error: the code does not register unless
+    /* [SOLVED] Quick description of the error: the code does not register unless
     the compressor and talon objects are declared in the drive class.
     for some reason they are not coming correctly from the interface.
     The code builds and deploys without a problem but the "robot code"
     light is off when you try to enable the robot. Look into this.
     */
-    Compressor compressor = new Compressor(0);
-    WPI_TalonFX fLeft = new WPI_TalonFX(front_left_drive);
-    WPI_TalonFX fRight = new WPI_TalonFX(front_right_drive);
+    
 
     double x, y, throttle, turn, speedL, speedR, t_left, t_right;
 
@@ -39,6 +35,7 @@ public class Drive implements Robot_Framework{
     }
 
     public void executeTank() {
+        
         y = -driveBox.getRawAxis(left_y_axis);
         x = driveBox.getRawAxis(right_x_axis);
 

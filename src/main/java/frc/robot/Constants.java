@@ -2,7 +2,12 @@ package frc.robot;
 
 public interface Constants {
 
-    // ID -- All ID constants need to be changed (imaginary vaules in now)
+    // ID -- Most ID constants need to be changed (imaginary vaules in now)
+    
+    int front_left_drive = 6;
+    int front_right_drive = 0;
+    int back_left_drive = 8;
+    int back_right_drive = 0; 
 
     final static int right_intake = 11;
     final static int left_intake = 12;
@@ -38,6 +43,10 @@ public interface Constants {
     final static double open_ramp = 0.2;
 
 
+    // Intake
+    final static int intake_continuous_current = 30;
+    final static int intake_peak_current = 30;
+
 
 
     // Control
@@ -61,5 +70,12 @@ public interface Constants {
     final static int start_button = 8;
     final static int left_stick_button = 9;
     final static int right_stick_button = 10;
+
+
+
+    // PID
+
+    int kTimeoutMs = 10; // Re-evaluate this
+
     
 }

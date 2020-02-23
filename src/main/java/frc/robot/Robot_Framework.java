@@ -9,15 +9,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 
 public interface Robot_Framework extends Constants {
+
+    XboxController driveBox = new XboxController(1);
     
     Compressor compressor = new Compressor(0);
 
     String test = "yes, we work!";
-    
-    int front_left_drive = 0;
-    int front_right_drive = 0;
-    int back_left_drive = 0;
-    int back_right_drive = 0; 
     
     WPI_TalonFX fLeft = new WPI_TalonFX(front_left_drive);
     WPI_TalonFX fRight = new WPI_TalonFX(front_right_drive);
@@ -28,13 +25,14 @@ public interface Robot_Framework extends Constants {
     SpeedControllerGroup right = new SpeedControllerGroup(fRight, bRight);
 
     DifferentialDrive tank = new DifferentialDrive(left, right);
-    XboxController driveBox = new XboxController(1);
 
     // Intake
-    TalonSRX intakeRight = new TalonSRX(right_intake);
-    TalonSRX intakeLeft = new TalonSRX(left_intake);
+    TalonSRX rightIntake = new TalonSRX(right_intake);
+    TalonSRX leftIntake = new TalonSRX(left_intake);
 
     // Intake Up-Down Pneumatics
-    DoubleSolenoid intakeRaise = new DoubleSolenoid(0, 1);
+    DoubleSolenoid intakePosition = new DoubleSolenoid(0, 1);
+
+    Drive drive = new Drive();
 
 }
