@@ -4,10 +4,10 @@ public interface Constants {
 
     // ID -- Most ID constants need to be changed (imaginary vaules in now)
     
-    int front_left_drive = 6;
-    int front_right_drive = 0;
-    int back_left_drive = 8;
-    int back_right_drive = 0; 
+    final static int front_left_drive = 6;
+    final static int front_right_drive = 0;
+    final static int back_left_drive = 8;
+    final static int back_right_drive = 0; 
 
     final static int right_intake = 11;
     final static int left_intake = 12;

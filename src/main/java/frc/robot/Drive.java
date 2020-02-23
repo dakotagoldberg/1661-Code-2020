@@ -9,13 +9,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Compressor;
 
 public class Drive implements Robot_Framework{
-
-    /* [SOLVED] Quick description of the error: the code does not register unless
-    the compressor and talon objects are declared in the drive class.
-    for some reason they are not coming correctly from the interface.
-    The code builds and deploys without a problem but the "robot code"
-    light is off when you try to enable the robot. Look into this.
-    */
     
 
     double x, y, throttle, turn, speedL, speedR, t_left, t_right;
@@ -56,6 +49,12 @@ public class Drive implements Robot_Framework{
         speedR = t_right + skim(t_left);
 
         tank.tankDrive(speedL, speedR);
+
+        System.out.println("x: " + x);
+        System.out.println("y: " + y);
+        System.out.println("speedR: " + speedR);
+        System.out.println("speedL: " + speedL);
+
     }
 
     private double skim(double v) {
