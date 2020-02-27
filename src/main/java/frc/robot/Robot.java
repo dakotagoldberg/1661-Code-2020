@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Timer;
@@ -114,6 +116,12 @@ public class Robot extends TimedRobot implements Robot_Framework {
     leftIntake.configPeakCurrentLimit(intake_peak_current);
     rightIntake.configPeakCurrentLimit(intake_peak_current);
 
+    horizontalAgitator.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
+    verticalAgitator.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
+
+    horizontalAgitator.setNeutralMode((NeutralMode.Coast));
+    verticalAgitator.setNeutralMode((NeutralMode.Coast));
+
   }
 
   @Override
@@ -159,8 +167,36 @@ public class Robot extends TimedRobot implements Robot_Framework {
     double intakeTestingSpeed = .3;
     double haTestingSpeed = .15;
 
-    // Spinning Intake
-    if (intakeLowered) {
+    // // Spinning Intake
+    // if (intakeLowered) {
+    //   rightIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
+    //   leftIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
+    //   horizontalAgitator.set(ControlMode.PercentOutput, haTestingSpeed);
+    //   System.out.println("Intake spinning.");
+    // }
+    // else {
+    //   rightIntake.set(ControlMode.PercentOutput, 0);
+    //   leftIntake.set(ControlMode.PercentOutput, 0);
+    //   horizontalAgitator.set(ControlMode.PercentOutput, 0);
+    //   System.out.println("Intake not spinning.");
+    // }
+
+    // Shooting
+
+    // Vertical Agitator
+    double va = driveBox.getRawAxis(left_trigger);
+    if (va > .1) {
+      verticalAgitator.set(ControlMode.PercentOutput, va);
+      System.out.println("Vertical Agitator spinning.");
+    }
+    else {
+      verticalAgitator.set(ControlMode.PercentOutput, 0);
+      System.out.println("Horizontal Agitator spinning.");
+    }
+
+    // Testing Intake and HA
+    double ha = driveBox.getRawAxis(right_trigger);
+    if (ha > .1) {
       rightIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
       leftIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
       horizontalAgitator.set(ControlMode.PercentOutput, haTestingSpeed);
@@ -172,8 +208,6 @@ public class Robot extends TimedRobot implements Robot_Framework {
       horizontalAgitator.set(ControlMode.PercentOutput, 0);
       System.out.println("Intake not spinning.");
     }
-
-    // Shooting
     
   }
 

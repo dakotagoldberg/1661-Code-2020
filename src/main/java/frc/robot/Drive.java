@@ -2,7 +2,7 @@ package frc.robot;
 
 import frc.robot.Robot_Framework;
 
-
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -24,6 +24,11 @@ public class Drive implements Robot_Framework{
         fRight.configOpenloopRamp(open_ramp);
 
         compressor.setClosedLoopControl(true);
+
+        fLeft.setNeutralMode((NeutralMode.Coast));
+        fRight.setNeutralMode((NeutralMode.Coast));
+        bLeft.setNeutralMode((NeutralMode.Coast));
+        bRight.setNeutralMode((NeutralMode.Coast));
     }
 
     public void executeTank() {
