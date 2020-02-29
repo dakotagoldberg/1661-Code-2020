@@ -12,6 +12,7 @@ import frc.robot.Robot_Framework;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -40,8 +41,10 @@ public class Robot extends TimedRobot implements Robot_Framework {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   
   
-  boolean intakeLowered = false;
-  WPI_TalonFX oneMotor = new  WPI_TalonFX(2);
+  boolean intakeLowered;
+  boolean agitatorReverse;
+
+  double startTime;
 
 
   /**
@@ -83,9 +86,24 @@ public class Robot extends TimedRobot implements Robot_Framework {
    */
   @Override
   public void autonomousInit() {
+        fLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
+
+        fRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
+
+        fLeft.configOpenloopRamp(open_ramp);
+
+        fRight.configOpenloopRamp(open_ramp);
+
+        compressor.setClosedLoopControl(true);
+
+        fLeft.setNeutralMode((NeutralMode.Coast));
+        fRight.setNeutralMode((NeutralMode.Coast));
+        bLeft.setNeutralMode((NeutralMode.Coast));
+        bRight.setNeutralMode((NeutralMode.Coast));
     // m_autoSelected = m_chooser.getSelected();
     // // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     // System.out.println("Auto selected: " + m_autoSelected);
+    startTime = Timer.getFPGATimestamp();
   }
 
   /**
@@ -93,6 +111,23 @@ public class Robot extends TimedRobot implements Robot_Framework {
    */
   @Override
   public void autonomousPeriodic() {
+
+    double time = Timer.getFPGATimestamp();
+    System.out.println("Time: " + time);
+    System.out.println("Time elapsed: " + (time - startTime));
+
+    if (time - startTime < 3) {
+      bRight.set(ControlMode.PercentOutput, .5);
+      fRight.set(ControlMode.PercentOutput, .5);
+      bLeft.set(ControlMode.PercentOutput, -.5);
+      fLeft.set(ControlMode.PercentOutput, -.5);
+      System.out.println("Running auto");
+    }
+    else {
+      // tank.tankDrive(0.0, 0.0);
+      System.out.println("Not running auto");
+    }
+
     // switch (m_autoSelected) {
     //   case kCustomAuto:
     //     // Put custom auto code here
@@ -111,16 +146,25 @@ public class Robot extends TimedRobot implements Robot_Framework {
   @Override
   public void teleopInit() {
 
+    intakeLowered = false;
+    agitatorReverse = false;
+
     leftIntake.configContinuousCurrentLimit(intake_continuous_current);
     rightIntake.configContinuousCurrentLimit(intake_continuous_current);
     leftIntake.configPeakCurrentLimit(intake_peak_current);
     rightIntake.configPeakCurrentLimit(intake_peak_current);
+    kicker.configContinuousCurrentLimit(intake_continuous_current);
+    kicker.configPeakCurrentLimit(intake_peak_current);
 
     horizontalAgitator.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
     verticalAgitator.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
+    shooterLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
+    shooterRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
 
     horizontalAgitator.setNeutralMode((NeutralMode.Coast));
     verticalAgitator.setNeutralMode((NeutralMode.Coast));
+    shooterLeft.setNeutralMode((NeutralMode.Coast));
+    shooterRight.setNeutralMode((NeutralMode.Coast));
 
   }
 
@@ -137,18 +181,35 @@ public class Robot extends TimedRobot implements Robot_Framework {
     else if (driveBox.getRawButton(right_bumper)) {
       gearSole.set(DoubleSolenoid.Value.kForward);
       System.out.println("Gear mode forward");
+      // driveBox.setRumble(RumbleType.kLeftRumble, .5);
+      // driveBox.setRumble(RumbleType.kRightRumble, .5);
     } 
-    else {
-      gearSole.set(DoubleSolenoid.Value.kOff);
-      System.out.println("Gear mode off");
-    }
+    // else {
+    //   gearSole.set(DoubleSolenoid.Value.kOff);
+    //   System.out.println("Gear mode off");
+    // }
 
 
     // Raising/Lowering Intake --> A BUTTON
-    if (driveBox.getRawButtonPressed(a_button)) {
+    if (mechBox.getRawButtonPressed(a_button)) {
       intakeLowered = !intakeLowered;
     }
 
+    // Reversing Agitators --> Left Stick BUTTON
+    if (mechBox.getRawButtonPressed(left_stick_button)) {
+      agitatorReverse = !agitatorReverse;
+      System.out.println("Reversed agitators.");
+    }
+
+    if (agitatorReverse) {
+      mechBox.setRumble(RumbleType.kRightRumble, 1);
+      mechBox.setRumble(RumbleType.kLeftRumble, 1);
+    }
+    else {
+      mechBox.setRumble(RumbleType.kRightRumble, 0);
+      mechBox.setRumble(RumbleType.kLeftRumble, 0);
+    }
+ 
     if (intakeLowered) {
       intakePosition.set(DoubleSolenoid.Value.kForward);
       // intakePosition.set(DoubleSolenoid.Value.kOff);
@@ -161,53 +222,77 @@ public class Robot extends TimedRobot implements Robot_Framework {
     } 
     else {
       intakePosition.set(DoubleSolenoid.Value.kOff);
-      System.out.println("Intake is off?");
+      System.out.println("Intake is off.");
     }
 
-    double intakeTestingSpeed = .3;
-    double haTestingSpeed = .15;
 
-    // // Spinning Intake
-    // if (intakeLowered) {
-    //   rightIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
-    //   leftIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
-    //   horizontalAgitator.set(ControlMode.PercentOutput, haTestingSpeed);
-    //   System.out.println("Intake spinning.");
-    // }
-    // else {
-    //   rightIntake.set(ControlMode.PercentOutput, 0);
-    //   leftIntake.set(ControlMode.PercentOutput, 0);
-    //   horizontalAgitator.set(ControlMode.PercentOutput, 0);
-    //   System.out.println("Intake not spinning.");
-    // }
-
-    // Shooting
-
-    // Vertical Agitator
-    double va = driveBox.getRawAxis(left_trigger);
-    if (va > .1) {
-      verticalAgitator.set(ControlMode.PercentOutput, va);
+    // Vertical Agitator --  Later tie to shooting and make sensor dialogue
+    double va = mechBox.getRawAxis(right_trigger);
+    if (va > .1 && !agitatorReverse){
+      verticalAgitator.set(ControlMode.PercentOutput, va *.4);
       System.out.println("Vertical Agitator spinning.");
+    }
+    else if (va > .1 && agitatorReverse){
+      verticalAgitator.set(ControlMode.PercentOutput, -va * .4);
+      System.out.println("Vertical Agitator spinning in reverse.");
     }
     else {
       verticalAgitator.set(ControlMode.PercentOutput, 0);
-      System.out.println("Horizontal Agitator spinning.");
     }
 
     // Testing Intake and HA
-    double ha = driveBox.getRawAxis(right_trigger);
-    if (ha > .1) {
-      rightIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
-      leftIntake.set(ControlMode.PercentOutput, intakeTestingSpeed);
-      horizontalAgitator.set(ControlMode.PercentOutput, haTestingSpeed);
-      System.out.println("Intake spinning.");
+    double ha = mechBox.getRawAxis(left_trigger);
+    if (ha > .1 && !agitatorReverse){
+      rightIntake.set(ControlMode.PercentOutput, .5);
+      leftIntake.set(ControlMode.PercentOutput, -.5);
+      horizontalAgitator.set(ControlMode.PercentOutput, -ha * .2);
+      System.out.println("Horizontal Agitator spinning.");
+      // System.out.println("Intake spinning.");
     }
+    else if (ha > .1 && agitatorReverse){
+      rightIntake.set(ControlMode.PercentOutput, .5);
+      leftIntake.set(ControlMode.PercentOutput, -.5);
+      horizontalAgitator.set(ControlMode.PercentOutput, ha * .2);
+      System.out.println("Horizontal Agitator spinning in reverse.");
+    } 
     else {
       rightIntake.set(ControlMode.PercentOutput, 0);
       leftIntake.set(ControlMode.PercentOutput, 0);
       horizontalAgitator.set(ControlMode.PercentOutput, 0);
-      System.out.println("Intake not spinning.");
+      // System.out.println("Intake not spinning.");
     }
+
+    // Shooting (very basic) -- calculate later
+    if (mechBox.getXButton()) {
+      shooterRight.set(ControlMode.PercentOutput, 1);
+      shooterLeft.set(ControlMode.PercentOutput, -1);
+      kicker.set(ControlMode.PercentOutput, -1);
+      if (!agitatorReverse) {
+        horizontalAgitator.set(ControlMode.PercentOutput, -.2);
+        // verticalAgitator.set(ControlMode.PercentOutput, .4);
+      }
+      else {
+        horizontalAgitator.set(ControlMode.PercentOutput, .2);
+        // verticalAgitator.set(ControlMode.PercentOutput, -.4);
+      }
+    }
+    else {
+      shooterRight.set(ControlMode.PercentOutput, 0);
+      shooterLeft.set(ControlMode.PercentOutput, 0);
+      kicker.set(ControlMode.PercentOutput, 0);
+      // horizontalAgitator.set(ControlMode.PercentOutput, 0);
+      // verticalAgitator.set(ControlMode.PercentOutput, 0);
+    }
+
+   
+    
+    
+
+    
+
+
+
+
     
   }
 
@@ -218,18 +303,29 @@ public class Robot extends TimedRobot implements Robot_Framework {
   @Override
   public void testInit() {
     
+    fLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
+
+        fRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
+
+        fLeft.configOpenloopRamp(open_ramp);
+
+        fRight.configOpenloopRamp(open_ramp);
+
+        compressor.setClosedLoopControl(true);
+
+        fLeft.setNeutralMode((NeutralMode.Coast));
+        fRight.setNeutralMode((NeutralMode.Coast));
+        bLeft.setNeutralMode((NeutralMode.Coast));
+        bRight.setNeutralMode((NeutralMode.Coast));
 
   }
 
    
   @Override
   public void testPeriodic() {
-    
-  
-    // oneMotor.set(.1);
 
+    tank.tankDrive(0.1, 0.1);
 
-  
   }
 }
 

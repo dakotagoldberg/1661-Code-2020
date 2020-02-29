@@ -11,8 +11,8 @@ public class Shooter implements Robot_Framework {
 
     public void Shoot(int dist){
         //Math dist(ft) -> Power(motor Units)
-        int power = 0;
-        ShooterR.set(power);
-        ShooterL.set(-1 * power);
+        // int power = 0;
+        // ShooterR.set(power);
+        // ShooterL.set(-1 * power);
     }
 }

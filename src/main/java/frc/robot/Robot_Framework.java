@@ -11,7 +11,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 public interface Robot_Framework extends Constants {
 
     // Xbox Controllers
-    XboxController driveBox = new XboxController(1);
+    XboxController driveBox = new XboxController(0);
+    XboxController mechBox = new XboxController(1);
 
     // Compressor
     Compressor compressor = new Compressor(0);
@@ -27,7 +28,7 @@ public interface Robot_Framework extends Constants {
 
     DifferentialDrive tank = new DifferentialDrive(left, right);
 
-    DoubleSolenoid gearSole = new DoubleSolenoid(2, 3);
+    DoubleSolenoid gearSole = new DoubleSolenoid(0, 1);
 
     Drive drive = new Drive();
 
@@ -35,17 +36,21 @@ public interface Robot_Framework extends Constants {
     TalonSRX rightIntake = new TalonSRX(right_intake);
     TalonSRX leftIntake = new TalonSRX(left_intake);
 
-    DoubleSolenoid intakePosition = new DoubleSolenoid(0, 1);
+    DoubleSolenoid intakePosition = new DoubleSolenoid(2, 3);
 
     // Shooter
-    WPI_TalonFX ShooterR = new  WPI_TalonFX(shooter_R);
-    WPI_TalonFX ShooterL = new  WPI_TalonFX(shooter_L);
+    WPI_TalonFX shooterRight = new  WPI_TalonFX(shooter_R);
+    WPI_TalonFX shooterLeft = new  WPI_TalonFX(shooter_L);
+    TalonSRX kicker = new TalonSRX(kicker_motor); // Defined constant not working.
 
     // Vertical Agitator
     WPI_TalonFX verticalAgitator = new WPI_TalonFX(vertical_agitator);
 
     // Horizontal Agitator
     WPI_TalonFX horizontalAgitator = new WPI_TalonFX(horizontal_agitator);
+
+    // Climb
+    DoubleSolenoid climbSole = new DoubleSolenoid(4, 5);
 
 
 }

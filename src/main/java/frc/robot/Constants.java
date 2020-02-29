@@ -4,21 +4,25 @@ public interface Constants {
 
     // ID -- Most ID constants need to be changed (imaginary vaules in now)
     
-    final static int shooter_L = 0;
-    final static int shooter_R = 0;
+    final static int shooter_L = 13;
+    final static int shooter_R = 12;
+    final static int kicker_motor = 19;
     
-    final static int turret_motor = 0;
+    final static int turret_motor = 14;
 
     final static int front_right_drive = 5;
     final static int front_left_drive = 6;
     final static int back_right_drive = 7; 
     final static int back_left_drive = 8;
 
-    final static int right_intake = 11; // Double check this value
-    final static int left_intake = 12; // Double check this value
+    final static int right_intake = 10; 
+    final static int left_intake = 11; 
 
-    final static int horizontal_agitator = 0;
-    final static int vertical_agitator = 0;
+    final static int horizontal_agitator = 16;
+    final static int vertical_agitator = 17;
+
+    final static int climb1 = 24;
+    final static int climb2 = 25;
 
     // Drive
 
@@ -39,7 +43,7 @@ public interface Constants {
     final static double torque = torque_per_motor * num_motors * high_gear_ratio; // N*m
 
     final static double wheel_radius = 0.0762; // m
-    final static double robot_weight = 56.7; // kg
+    final static double robot_weight = 58.0598; // kg
     final static double max_accel = torque / (wheel_radius * robot_weight); // m/s/s
 
     final static double max_jerk = 60.0; // m/s/s/s
@@ -65,8 +69,8 @@ public interface Constants {
     final static int right_x_axis = 4;
     final static int right_y_axis = 5;
 
-    final static int left_trigger = 3;
-    final static int right_trigger = 4;
+    final static int left_trigger = 2;
+    final static int right_trigger = 3;
 
     final static int a_button = 1;
     final static int b_button = 2;
