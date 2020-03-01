@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.*;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.*;
 
@@ -31,12 +32,13 @@ public interface Robot_Framework extends Constants {
     DoubleSolenoid gearSole = new DoubleSolenoid(0, 1);
 
     Drive drive = new Drive();
+    AutoDrive auto = new AutoDrive();
 
     // Intake
     TalonSRX rightIntake = new TalonSRX(right_intake);
     TalonSRX leftIntake = new TalonSRX(left_intake);
-
     DoubleSolenoid intakePosition = new DoubleSolenoid(2, 3);
+    Intake intake = new Intake();
 
     // Shooter
     WPI_TalonFX shooterRight = new  WPI_TalonFX(shooter_R);
@@ -45,9 +47,11 @@ public interface Robot_Framework extends Constants {
 
     // Vertical Agitator
     WPI_TalonFX verticalAgitator = new WPI_TalonFX(vertical_agitator);
+    Vertical_Agitator vAgitator = new Vertical_Agitator();
 
     // Horizontal Agitator
     WPI_TalonFX horizontalAgitator = new WPI_TalonFX(horizontal_agitator);
+    Horizontal_Agitator hAgitator = new Horizontal_Agitator();
 
     // Climb
     DoubleSolenoid climbSole = new DoubleSolenoid(4, 5);
