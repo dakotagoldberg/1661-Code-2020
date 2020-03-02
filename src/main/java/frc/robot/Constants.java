@@ -92,7 +92,7 @@ public interface Constants {
     // 1 encouder rotation: 4096 counts = (230/16) * 9
     // 240 counts --> 1 turret rotation
     // 1 degree = 240 counts/360 degrees
-    final static double one_turret_degree = (((4096.0 * (1.0/9.0) * 230.0/16) / 360)) * (5.0/3.0);
+    final static double one_turret_degree = (((4096.0 * 9.0 * 230.0/16) / 360));
     
 
     
