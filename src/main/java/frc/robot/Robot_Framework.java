@@ -53,6 +53,9 @@ public interface Robot_Framework extends Constants {
     WPI_TalonFX horizontalAgitator = new WPI_TalonFX(horizontal_agitator);
     Horizontal_Agitator hAgitator = new Horizontal_Agitator();
 
+    // Turret
+    TalonSRX turret = new TalonSRX(turret_motor);
+
     // Climb
     DoubleSolenoid climbSole = new DoubleSolenoid(4, 5);
 

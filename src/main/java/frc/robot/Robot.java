@@ -103,32 +103,32 @@ public class Robot extends TimedRobot implements Robot_Framework {
 
     double diff = time - startTime;
 
-    if (diff < 2) {
+    // if (diff < 2) {
+    //   bRight.set(ControlMode.PercentOutput, .4);
+    //   fRight.set(ControlMode.PercentOutput, .4);
+    //   bLeft.set(ControlMode.PercentOutput, -.4);
+    //   fLeft.set(ControlMode.PercentOutput, -.4);
+    // auto.execute(.4);
+    // }
+
+    if (diff < 3) {
+      shooterRight.set(ControlMode.PercentOutput, 1);
+      shooterLeft.set(ControlMode.PercentOutput, -1);
+      kicker.set(ControlMode.PercentOutput, -1);
+    }
+    if (diff > 3 && diff < 8) {
+      verticalAgitator.set(ControlMode.PercentOutput, .4);
+      shooterRight.set(ControlMode.PercentOutput, 1);
+      shooterLeft.set(ControlMode.PercentOutput, -1);
+      kicker.set(ControlMode.PercentOutput, -1);
+  
+    }
+    if (diff > 8 && diff < 10) {
       bRight.set(ControlMode.PercentOutput, .4);
       fRight.set(ControlMode.PercentOutput, .4);
       bLeft.set(ControlMode.PercentOutput, -.4);
       fLeft.set(ControlMode.PercentOutput, -.4);
     }
-
-    // if (diff < 3) {
-    //   shooterRight.set(ControlMode.PercentOutput, 1);
-    //   shooterLeft.set(ControlMode.PercentOutput, -1);
-    //   kicker.set(ControlMode.PercentOutput, -1);
-    // }
-    // if (diff > 3 && diff < 5) {
-    //   verticalAgitator.set(ControlMode.PercentOutput, .4);
-    //   shooterRight.set(ControlMode.PercentOutput, 1);
-    //   shooterLeft.set(ControlMode.PercentOutput, -1);
-    //   kicker.set(ControlMode.PercentOutput, -1);
-  
-    //    // auto.execute(.4);
-    // }
-    // if (diff > 5 && diff < 7) {
-    //   bRight.se,.t(ControlMode.PercentOutput, .4);
-    //   fRight.set(ControlMode.PercentOutput, .4);
-    //   bLeft.set(ControlMode.PercentOutput, -.4);
-    //   fLeft.set(ControlMode.PercentOutput, -.4);
-    // }
     // switch (m_autoSelected) {
     //   case kCustomAuto:
     //     // Put custom auto code here
@@ -147,22 +147,25 @@ public class Robot extends TimedRobot implements Robot_Framework {
     agitatorReverse = false;
     gearSole.set(DoubleSolenoid.Value.kForward);
 
-    leftIntake.configContinuousCurrentLimit(intake_continuous_current);
-    rightIntake.configContinuousCurrentLimit(intake_continuous_current);
-    leftIntake.configPeakCurrentLimit(intake_peak_current);
-    rightIntake.configPeakCurrentLimit(intake_peak_current);
-    kicker.configContinuousCurrentLimit(intake_continuous_current);
-    kicker.configPeakCurrentLimit(intake_peak_current);
+    // leftIntake.configContinuousCurrentLimit(intake_continuous_current);
+    // rightIntake.configContinuousCurrentLimit(intake_continuous_current);
+    // leftIntake.configPeakCurrentLimit(intake_peak_current);
+    // rightIntake.configPeakCurrentLimit(intake_peak_current);
+    // kicker.configContinuousCurrentLimit(intake_continuous_current);
+    // kicker.configPeakCurrentLimit(intake_peak_current);
 
-    horizontalAgitator.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
-    verticalAgitator.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
-    shooterLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
-    shooterRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
+    // horizontalAgitator.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
+    // verticalAgitator.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
+    // shooterLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
+    // shooterRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, intake_peak_current, intake_continuous_current, 0.5));
 
     horizontalAgitator.setNeutralMode((NeutralMode.Coast));
     verticalAgitator.setNeutralMode((NeutralMode.Coast));
     shooterLeft.setNeutralMode((NeutralMode.Coast));
     shooterRight.setNeutralMode((NeutralMode.Coast));
+
+    turret.setSelectedSensorPosition(0);
+    
 
   }
 
@@ -187,8 +190,16 @@ public class Robot extends TimedRobot implements Robot_Framework {
     // Reversing Agitators --> Left Stick BUTTON
     if (mechBox.getRawButtonPressed(left_stick_button)) {
       agitatorReverse = !agitatorReverse;
-      // System.out.println("Reversed agitators.");
     }
+
+    // int aRev; // Used as a multiplier for agitator reverse
+
+    // if(agitatorReverse) {
+    //   aRev = -1;
+    // }
+    // else {
+    //   aRev = 1;
+    // }
 
 
     if (agitatorReverse) {
@@ -265,14 +276,6 @@ public class Robot extends TimedRobot implements Robot_Framework {
       shooterRight.set(ControlMode.PercentOutput, 1);
       shooterLeft.set(ControlMode.PercentOutput, -1);
       kicker.set(ControlMode.PercentOutput, -1);
-      if (!agitatorReverse) {
-        horizontalAgitator.set(ControlMode.PercentOutput, -.2);
-        // hAgitator.spin(1);
-      }
-      else {
-        horizontalAgitator.set(ControlMode.PercentOutput, .2);
-        // hAgitator.spin(-1);
-      }
     }
     else if (mechBox.getRawButton(left_bumper)) {
       shooterRight.set(ControlMode.PercentOutput, .5);
@@ -286,6 +289,32 @@ public class Robot extends TimedRobot implements Robot_Framework {
     }
 
    
+    // TURRET
+
+    // if (driveBox.getRawButton(b_button)) {
+    //   turret.set(ControlMode.PercentOutput, 0.1);
+    // }
+    // else if (driveBox.getRawButton(x_button)) {
+    //   turret.set(ControlMode.PercentOutput, -0.1);
+    // } 
+    // else {
+    //   turret.set(ControlMode.PercentOutput, 0);
+    // }
+
+    double turretStick = mechBox.getRawAxis(4);
+
+    if (Math.abs(turretStick) > .1) {
+      turret.set(ControlMode.PercentOutput, turretStick * 1);
+    }
+    else {
+      turret.set(ControlMode.PercentOutput, 0);
+    
+    System.out.println(turret.getSelectedSensorPosition());
+    System.out.println("Turret Degree: " + (turret.getSelectedSensorPosition() / one_turret_degree));
+    
+  }
+
+
     
     
 
@@ -304,28 +333,12 @@ public class Robot extends TimedRobot implements Robot_Framework {
   @Override
   public void testInit() {
     
-    fLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
-
-        fRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, peak_current, continuous_current, 0.5));
-
-        fLeft.configOpenloopRamp(open_ramp);
-
-        fRight.configOpenloopRamp(open_ramp);
-
-        compressor.setClosedLoopControl(true);
-
-        fLeft.setNeutralMode((NeutralMode.Coast));
-        fRight.setNeutralMode((NeutralMode.Coast));
-        bLeft.setNeutralMode((NeutralMode.Coast));
-        bRight.setNeutralMode((NeutralMode.Coast));
-
-  }
+      }
 
    
   @Override
   public void testPeriodic() {
 
-    tank.tankDrive(0.1, 0.1);
 
   }
 }
